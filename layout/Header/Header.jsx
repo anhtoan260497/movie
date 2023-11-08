@@ -14,10 +14,6 @@ const color = {
   secondary: "hsla(0,0%,100%,.6)",
 };
 
-const fadeOut = keyframes`
-0% { opacity: 1; }
-100% { opacity: 0; }
-`;
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -27,6 +23,7 @@ const HeaderContainer = styled.div`
   background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
   padding: 0 20px;
   position: fixed;
+  z-index : 100;
 
   svg {
     fill: white;
