@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { fadeIn } from "../../styles/globalKeyframes";
+import { useRouter } from "next/router";
 
 const flexCenter = {
   display: "flex",
@@ -33,8 +34,8 @@ const HeaderContainer = styled.div`
     height: 40px;
   }
 
-  @media only screen and (max-width : 767px){
-    display : none;
+  @media only screen and (max-width: 767px) {
+    display: none;
   }
 `;
 
@@ -56,6 +57,12 @@ const Items = styled.div`
   &:hover {
     color: ${color.primary};
   }
+
+  @media only screen and (max-width : 767px){
+    &:hover {
+      color : ${color.secondary}
+    }
+  }
 `;
 
 const MenuChildItems = styled.div`
@@ -66,6 +73,14 @@ const MenuChildItems = styled.div`
   color: ${color.secondary};
   animation: ${fadeIn} 0.5s linear;
   padding: 0 0 20px 0;
+
+  @media only screen and (max-width: 767px) {
+    position: static;
+    width: auto;
+    padding: 0;
+    margin: 10px 0 10px 10px;
+    font-size: 16px;
+  }
 `;
 
 const ChildItems = styled.a`
@@ -73,6 +88,13 @@ const ChildItems = styled.a`
   padding: 10px 10px;
   &:hover {
     color: ${color.primary};
+  }
+
+  @media only screen and (max-width: 767px) {
+    &:hover {
+      color: ${color.secondary}; //disable hover
+    }
+    color: ${(props) => (props.$selectedChildItem ? color.primary : color.secondary)};
   }
 `;
 
@@ -102,12 +124,11 @@ const HeaderMobileContainer = styled(HeaderContainer)`
   }
 `;
 
-const mobileMenuButton = styled.button``;
-
-const HeaderMobileMenu = styled.button`
+const HeaderMobileMenu = styled.div`
   position: absolute;
   width: 70%;
-  height: calc(200% - 64px);
+  height: 100%;
+  top: 0;
   left: ${(props) => (props.$active ? "0" : "-70%")};
   background-color: black;
   transition: left 0.5s ease;
@@ -121,9 +142,15 @@ const MobileMenuLogo = styled.div`
   align-items: ${flexCenter.alignItems};
   flex-direction: row-reverse;
   justify-content: space-between;
+  margin: 0 0 10px 0;
 `;
 
-const MenuItems = [
+const MobileItems = styled.div`
+  color: white;
+  font-size: 20px;
+`;
+
+const menuItems = [
   {
     label: "Movies",
     type: "movie",
@@ -174,10 +201,16 @@ const MenuItems = [
 
 function Header() {
   const [hoverItem, setHoverItem] = useState("");
+  const [activeItem, setActiveItem] = useState("");
+  const [openMobileItem, setOpenMobileItem] = useState([]);
   const [isActiveMobileMenu, setIsActiveMobileMenu] = useState(false);
 
+  // hooks
+  // const router = useRouter()
+  // console.log(router.pathname)
+
   const renderHeaderItems = () => {
-    return MenuItems.map((items, idx) => {
+    return menuItems.map((items, idx) => {
       return (
         <React.Fragment key={items.path}>
           <Items
@@ -202,8 +235,42 @@ function Header() {
     });
   };
 
+  const renderMobileItems = () => {
+    return menuItems.map((items) => {
+      return (
+        <Fragment key={items.path}>
+          <Items $active={activeItem === items.type} onClick={() => handleClickMobileItems(items.type)}>
+            {items.label}
+          </Items>
+          {openMobileItem.includes(items.type) && (
+            <MenuChildItems>
+              {items.childItems.map((childItems) => {
+                return <ChildItems key={childItems.path}>{childItems.label}</ChildItems>;
+              })}
+            </MenuChildItems>
+          )}
+        </Fragment>
+      );
+    });
+  };
+
+  const handleClickMobileItems = (type) => {
+    setActiveItem(type);
+    if (openMobileItem.includes(type)) {
+      const cloneItems = [...openMobileItem];
+      console.log(cloneItems)
+      const itemIdx = cloneItems.findIndex(item => item === type);
+      cloneItems.splice(itemIdx, 1);
+      setOpenMobileItem(cloneItems);
+      return;
+    }
+
+    setOpenMobileItem([...openMobileItem, type]);
+  };
+
   return (
     <>
+      {/* Desktop UI */}
       <HeaderContainer>
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
           <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z" />
@@ -211,6 +278,7 @@ function Header() {
         <HeaderItems>{renderHeaderItems()}</HeaderItems>
       </HeaderContainer>
 
+      {/* Mobile UI */}
       <HeaderMobileContainer>
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" onClick={() => setIsActiveMobileMenu(true)}>
           <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
@@ -230,6 +298,8 @@ function Header() {
               <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z" />
             </svg>
           </MobileMenuLogo>
+
+          <MobileItems>{renderMobileItems()}</MobileItems>
         </HeaderMobileMenu>
       </HeaderMobileContainer>
     </>
