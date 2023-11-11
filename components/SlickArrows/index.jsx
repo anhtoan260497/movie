@@ -51,7 +51,7 @@ const SlickArrowsButton = styled.button`
   }
 
   @media only screen and (max-width: 767px) {
-    right: ${(props) => (props.$chevron === "right" ? "20%" : "68%")};
+    right: ${(props) => (props.$chevron === "right" ? "22%" : "66%")};
   }
 `;
 

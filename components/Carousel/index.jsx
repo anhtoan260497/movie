@@ -69,7 +69,7 @@ const CarouselContainer = styled.div`
       bottom: 20px;
       width: fit-content;
       display: flex !important;
-      left: 38%;
+      left: 41%;
   
       li {
         margin: 0 2px;
@@ -124,6 +124,7 @@ const CarouselTitle = styled.img`
   @media only screen and (max-width: 767px) {
     position: static;
     height: 80px;
+    object-fit : contain;
   }
 `;
 
@@ -191,6 +192,7 @@ const MoreDetailMobile = styled.a`
   background-color: rgba(0, 0, 0, 0.5);
   border: 2px solid white;
   border-radius: 50px;
+
   animation: ${moveUpDown} 5s linear infinite;
 `;
 
