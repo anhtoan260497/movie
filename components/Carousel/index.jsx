@@ -184,7 +184,6 @@ const MoreDetailMobile = styled.a`
   position: absolute;
   bottom: 30%;
   left: calc(50% - 50px);
-  display: block;
   text-align: center;
   width: 120px;
   padding: 5px 15px;
@@ -192,8 +191,12 @@ const MoreDetailMobile = styled.a`
   background-color: rgba(0, 0, 0, 0.5);
   border: 2px solid white;
   border-radius: 50px;
-
   animation: ${moveUpDown} 5s linear infinite;
+  display: none;
+
+  @media only screen and (max-width : 767px){
+    display : block;
+  }
 `;
 
 const CarouselPoster = styled.img`
@@ -215,7 +218,6 @@ const CarouselPosterMobile = styled(CarouselPoster)`
 `;
 
 function Carousel({ listItems }) {
-  const [trigger, setTrigger] = useState(false);
   const [items, setItems] = useState(listItems);
 
   const getTitleImage = async (id) => {
@@ -256,6 +258,7 @@ function Carousel({ listItems }) {
     arrows: true,
     autoplay: true,
     autoplaySpeed: 10000,
+    draggable  : true,
     nextArrow: <SlickArrows className="slick-next" chevron="right" />,
     prevArrow: <SlickArrows class="slick-prev" chevron="left" />,
     lazyLoad: "progressive",
@@ -286,7 +289,6 @@ function Carousel({ listItems }) {
             height={0}
             alt=""
           />
-
           <CarouselPosterMobile as={Image} src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`} width={1920} height={0} alt="" />
         </CarouselItem>
       );

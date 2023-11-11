@@ -17,12 +17,14 @@ const SlickArrowsButton = styled.button`
   padding: 0;
   border-radius: 50%;
   background-color: transparent;
-  border: 4px solid white;
   cursor: pointer;
+  background-color: rgba(29, 29, 31, 0.4);
   transition: background-color 0.3s ease;
+  color : black;
+  border:none;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 50%);
+    background-color : white;
     transition: background-color 0.3s ease;
     svg {
       fill: black;
@@ -35,9 +37,9 @@ const SlickArrowsButton = styled.button`
 
   &:before {
     content: "";
-    width: 70%;
-    height: 70%;
-    border: 1px solid white;
+    width: 50%;
+    height: 50%;
+    border: 2px solid white;
     position: absolute;
     border-radius: 50%;
   }
@@ -51,6 +53,7 @@ const SlickArrowsButton = styled.button`
   }
 
   @media only screen and (max-width: 767px) {
+    display : none;
     right: ${(props) => (props.$chevron === "right" ? "22%" : "66%")};
   }
 `;
