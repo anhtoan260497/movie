@@ -5,11 +5,11 @@ import { limitItems } from "../helper";
 import filmDetails from "../api/filmDetails";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { listFilmFake } from "./api/fakeListFilm";
+import RibbonLandscape from "../components/RibbonLandscape";
 
-export default function Home({ listFilm }) {
+export default function Home({ listFilm  = listFilmFake}) {
   
-
-
   return (
     <>
       <Head>
@@ -18,6 +18,7 @@ export default function Home({ listFilm }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Carousel listItems={listFilm} />
+      <RibbonLandscape />
     </>
   );
 }
@@ -40,3 +41,5 @@ export const getStaticProps = async () => {
     },
   };
 };
+
+
