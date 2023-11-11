@@ -20,7 +20,7 @@ const HeaderContainer = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   padding: 0 20px;
   position: fixed;
   z-index : 100;
@@ -56,6 +56,7 @@ const Items = styled.div`
   }
 
   @media only screen and (max-width : 767px){
+    margin : 20px 0 ;
     &:hover {
       color : ${color.secondary}
     }
@@ -68,7 +69,7 @@ const MenuChildItems = styled.div`
   left: -10px;
   width: 200px;
   color: ${color.secondary};
-  animation: ${fadeIn} 0.5s linear;
+    
   padding: 0 0 20px 0;
 
   @media only screen and (max-width: 767px) {
@@ -132,6 +133,7 @@ const HeaderMobileMenu = styled.div`
   border: none;
   border-right: 1px solid white;
   padding: 10px;
+  z-index : 100;
 `;
 
 const MobileMenuLogo = styled.div`
