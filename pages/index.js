@@ -18,28 +18,28 @@ export default function Home({ listFilm  = listFilmFake}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Carousel listItems={listFilm} />
-      <RibbonLandscape />
+      <RibbonLandscape listItems={listFilm} />
     </>
   );
 }
 
-export const getStaticProps = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${process.env.NEXT_APP_MOVIE_TOKEN}`,
-    },
-  };
+// export const getStaticProps = async () => {
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       accept: "application/json",
+//       Authorization: `Bearer ${process.env.NEXT_APP_MOVIE_TOKEN}`,
+//     },
+//   };
 
-  const res = await fetch(listFilms.getListFilm("movie", "popular", 1), options);
-  const data = await res.json();
-  const listFilm = limitItems(data.results, 5);
-  return {
-    props: {
-      listFilm: listFilm,
-    },
-  };
-};
+//   const res = await fetch(listFilms.getListFilm("movie", "popular", 1), options);
+//   const data = await res.json();
+//   const listFilm = limitItems(data.results, 5);
+//   return {
+//     props: {
+//       listFilm: listFilm,
+//     },
+//   };
+// };
 
 
