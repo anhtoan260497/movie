@@ -114,8 +114,10 @@ const CarouselTitleContainer = styled.div`
 `;
 
 const CarouselTitle = styled.img`
-  width: fit-content;
+  width:100%;
+  max-width : 500px;
   height: 100px;
+  object-fit : contain;
   position: absolute;
   top: calc(50% - 150px);
   left: 50px;
@@ -123,6 +125,7 @@ const CarouselTitle = styled.img`
 
   @media only screen and (max-width: 767px) {
     position: static;
+    max-width : 100%;
     height: 80px;
     object-fit : contain;
   }
